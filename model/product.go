@@ -15,13 +15,13 @@
 package model
 
 import (
+	"github.com/wangningkai/hummingbird-sdk-go/commons"
 	"github.com/winc-link/edge-driver-proto/driverproduct"
-	"github.com/winc-link/hummingbird-sdk-go/commons"
 )
 
 type (
 	Product struct {
-		//CreateAt     time.Time
+		// CreateAt     time.Time
 		Id           string
 		Name         string
 		Key          string
@@ -31,9 +31,9 @@ type (
 		Platform     commons.IotPlatform
 		NetType      commons.ProductNetType
 		ProtocolType string
-		Properties   []Property //属性
-		Events       []Event    //事件
-		Services     []Service  //服务
+		Properties   []Property // 属性
+		Events       []Event    // 事件
+		Services     []Service  // 服务
 	}
 
 	Service struct {

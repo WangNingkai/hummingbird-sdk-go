@@ -16,8 +16,9 @@ package interfaces
 
 import (
 	"context"
-	"github.com/winc-link/hummingbird-sdk-go/commons"
-	"github.com/winc-link/hummingbird-sdk-go/model"
+
+	"github.com/wangningkai/hummingbird-sdk-go/commons"
+	"github.com/wangningkai/hummingbird-sdk-go/model"
 )
 
 type Driver interface {
@@ -31,8 +32,8 @@ type Driver interface {
 	Stop(ctx context.Context) error
 	// HandlePropertySet 设备属性下发
 	HandlePropertySet(ctx context.Context, deviceId string, data model.PropertySet) error
-	//HandlePropertyGet 设备属性查询
+	// HandlePropertyGet 设备属性查询
 	HandlePropertyGet(ctx context.Context, deviceId string, data model.PropertyGet) error
-	//HandleServiceExecute 设备服务调用
+	// HandleServiceExecute 设备服务调用
 	HandleServiceExecute(ctx context.Context, deviceId string, data model.ServiceExecuteRequest) error
 }

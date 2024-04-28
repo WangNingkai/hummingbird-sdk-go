@@ -19,22 +19,21 @@ import (
 	"errors"
 	"flag"
 	"fmt"
-
 	"os"
 	"os/signal"
 	"sync"
 	"syscall"
 	"time"
 
-	"github.com/winc-link/hummingbird-sdk-go/commons"
-	"github.com/winc-link/hummingbird-sdk-go/interfaces"
-	"github.com/winc-link/hummingbird-sdk-go/internal/cache"
-	"github.com/winc-link/hummingbird-sdk-go/internal/client"
-	"github.com/winc-link/hummingbird-sdk-go/internal/config"
-	"github.com/winc-link/hummingbird-sdk-go/internal/logger"
-	"github.com/winc-link/hummingbird-sdk-go/internal/server"
-	"github.com/winc-link/hummingbird-sdk-go/internal/snowflake"
-	"github.com/winc-link/hummingbird-sdk-go/model"
+	"github.com/wangningkai/hummingbird-sdk-go/commons"
+	"github.com/wangningkai/hummingbird-sdk-go/interfaces"
+	"github.com/wangningkai/hummingbird-sdk-go/internal/cache"
+	"github.com/wangningkai/hummingbird-sdk-go/internal/client"
+	"github.com/wangningkai/hummingbird-sdk-go/internal/config"
+	"github.com/wangningkai/hummingbird-sdk-go/internal/logger"
+	"github.com/wangningkai/hummingbird-sdk-go/internal/server"
+	"github.com/wangningkai/hummingbird-sdk-go/internal/snowflake"
+	"github.com/wangningkai/hummingbird-sdk-go/model"
 
 	mqtt "github.com/eclipse/paho.mqtt.golang"
 	"github.com/winc-link/edge-driver-proto/cloudinstance"
@@ -134,7 +133,7 @@ func (d *DriverService) buildRpcBaseMessage() error {
 		baseMessage.UsePlatform = false
 		baseMessage.DriverInstanceId = d.cfg.GetServiceID()
 	} else {
-		//get instance info。
+		// get instance info。
 		timeoutContext, cancelFunc := context.WithTimeout(context.Background(), time.Second*3)
 		defer cancelFunc()
 		var request cloudinstance.QueryCloudInstanceByPlatformRequest
@@ -153,12 +152,11 @@ func (d *DriverService) buildRpcBaseMessage() error {
 		if cloudInstanceInfo.Status == cloudinstance.CloudInstanceStatus_Stop {
 			baseMessage.CloudServiceInfo.Status = commons.Stop
 		} else if cloudInstanceInfo.Status == cloudinstance.CloudInstanceStatus_Error {
-
 		} else {
 			baseMessage.CloudServiceInfo.Status = commons.Start
 		}
 		if baseMessage.CloudServiceInfo.Status != commons.Start {
-			//return errors.New("cloud service status error")
+			// return errors.New("cloud service status error")
 			d.logger.Error("云服务状态异常，请确保云服务是启动状态")
 			os.Exit(-1)
 		}
@@ -412,7 +410,6 @@ func (d *DriverService) connectIotPlatform(deviceId string) error {
 		if resp.Data.Status == driverdevice.ConnectStatus_ONLINE {
 			return nil
 		} else if resp.Data.Status == driverdevice.ConnectStatus_OFFLINE {
-
 		}
 	}
 	return errors.New("unKnow error")
@@ -438,7 +435,6 @@ func (d *DriverService) disconnectIotPlatform(deviceId string) error {
 			return errors.New(resp.BaseResponse.ErrorMessage)
 		}
 		if resp.Data.Status == driverdevice.ConnectStatus_ONLINE {
-
 		} else if resp.Data.Status == driverdevice.ConnectStatus_OFFLINE {
 			return nil
 		}
@@ -495,9 +491,7 @@ func (d *DriverService) getDeviceById(deviceId string) (model.Device, bool) {
 }
 
 func (d *DriverService) createDevice(addDevice model.AddDevice) (device model.Device, err error) {
-	var (
-		resp *driverdevice.CreateDeviceRequestResponse
-	)
+	var resp *driverdevice.CreateDeviceRequestResponse
 
 	if addDevice.ProductId == "" || addDevice.Name == "" || addDevice.DeviceSn == "" {
 		err = errors.New("param failed")
@@ -569,7 +563,7 @@ func (d *DriverService) getCustomStorage(keys []string) (map[string][]byte, erro
 	}
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second*10)
 	defer cancel()
-	var req = driverstorage.GetReq{
+	req := driverstorage.GetReq{
 		DriverServiceId: d.cfg.GetServiceID(),
 		Keys:            keys,
 	}
@@ -599,7 +593,7 @@ func (d *DriverService) putCustomStorage(kvs map[string][]byte) error {
 			Value: v,
 		})
 	}
-	var req = driverstorage.PutReq{
+	req := driverstorage.PutReq{
 		DriverServiceId: d.cfg.GetServiceID(),
 		Data:            kv,
 	}
@@ -608,7 +602,6 @@ func (d *DriverService) putCustomStorage(kvs map[string][]byte) error {
 		return errors.New(status.Convert(err).Message())
 	}
 	return nil
-
 }
 
 func (d *DriverService) deleteCustomStorage(keys []string) error {
@@ -617,7 +610,7 @@ func (d *DriverService) deleteCustomStorage(keys []string) error {
 	}
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second*10)
 	defer cancel()
-	var req = driverstorage.DeleteReq{
+	req := driverstorage.DeleteReq{
 		DriverServiceId: d.cfg.GetServiceID(),
 		Keys:            keys,
 	}

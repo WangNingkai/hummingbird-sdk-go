@@ -17,7 +17,7 @@ package cache
 import (
 	"sync"
 
-	"github.com/winc-link/hummingbird-sdk-go/model"
+	"github.com/wangningkai/hummingbird-sdk-go/model"
 )
 
 type ProductProvider interface {
@@ -87,6 +87,7 @@ func (t *ProductCache) SearchById(id string) (model.Product, bool) {
 	}
 	return *p, ok
 }
+
 func (t *ProductCache) All() map[string]model.Product {
 	t.mu.RLock()
 	defer t.mu.RUnlock()
@@ -97,6 +98,7 @@ func (t *ProductCache) All() map[string]model.Product {
 	}
 	return ps
 }
+
 func (t *ProductCache) Add(p model.Product) {
 	t.mu.Lock()
 	defer t.mu.Unlock()
@@ -116,8 +118,8 @@ func (t *ProductCache) Update(p model.Product) {
 	t.propertyMap[p.Id] = propertyTransformToMap(p.Properties)
 	t.serviceMap[p.Id] = serviceTransformToMap(p.Services)
 	t.eventMap[p.Id] = eventTransformToMap(p.Events)
-
 }
+
 func (t *ProductCache) RemoveById(id string) {
 	t.mu.Lock()
 	defer t.mu.Unlock()
@@ -187,6 +189,7 @@ func (t *ProductCache) GetProductEvents(productId string) (map[string]model.Even
 	}
 	return e, ok
 }
+
 func (t *ProductCache) GetProductProperties(productId string) (map[string]model.Property, bool) {
 	t.mu.RLock()
 	defer t.mu.RUnlock()

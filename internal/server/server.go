@@ -18,19 +18,20 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"google.golang.org/grpc/reflection"
 	"net"
 	"runtime/debug"
 	"sync"
 	"time"
 
-	"github.com/winc-link/hummingbird-sdk-go/commons"
-	"github.com/winc-link/hummingbird-sdk-go/interfaces"
-	"github.com/winc-link/hummingbird-sdk-go/internal/cache"
-	"github.com/winc-link/hummingbird-sdk-go/internal/client"
-	"github.com/winc-link/hummingbird-sdk-go/internal/config"
-	"github.com/winc-link/hummingbird-sdk-go/internal/logger"
-	"github.com/winc-link/hummingbird-sdk-go/model"
+	"google.golang.org/grpc/reflection"
+
+	"github.com/wangningkai/hummingbird-sdk-go/commons"
+	"github.com/wangningkai/hummingbird-sdk-go/interfaces"
+	"github.com/wangningkai/hummingbird-sdk-go/internal/cache"
+	"github.com/wangningkai/hummingbird-sdk-go/internal/client"
+	"github.com/wangningkai/hummingbird-sdk-go/internal/config"
+	"github.com/wangningkai/hummingbird-sdk-go/internal/logger"
+	"github.com/wangningkai/hummingbird-sdk-go/model"
 
 	"github.com/winc-link/edge-driver-proto/cloudinstance"
 	"github.com/winc-link/edge-driver-proto/cloudinstancecallback"
@@ -63,8 +64,8 @@ type RpcService struct {
 	productProvider cache.ProductProvider
 
 	driverProvider interfaces.Driver
-	//customMqttMessage interfaces.CustomMqttMessage
-	//reportPool     *worker.TMWorkerPool
+	// customMqttMessage interfaces.CustomMqttMessage
+	// reportPool     *worker.TMWorkerPool
 
 	logger    logger.Logger
 	cli       *client.ResourceClient
@@ -72,7 +73,8 @@ type RpcService struct {
 }
 
 func (server *RpcService) CloudInstanceStatueCallback(ctx context.Context,
-	request *cloudinstancecallback.CloudInstanceStatueCallbackRequest) (*emptypb.Empty, error) {
+	request *cloudinstancecallback.CloudInstanceStatueCallbackRequest,
+) (*emptypb.Empty, error) {
 	var notifyType commons.CloudPluginNotifyType
 	if request.GetStatus() == cloudinstance.CloudInstanceStatus_Stop {
 		notifyType = commons.CloudPluginStopNotify
@@ -245,7 +247,7 @@ func (server *RpcService) ThingModelMsgIssue(ctx context.Context, request *thing
 			server.logger.Errorf("handleActionExecute error: %s", err)
 		}
 	case thingmodel.OperationType_CUSTOM_MQTT_PUBLISH:
-		//server.customMqttMessage.CustomMqttMessage("", request.Data)
+		// server.customMqttMessage.CustomMqttMessage("", request.Data)
 	default:
 		return new(emptypb.Empty), status.Errorf(codes.InvalidArgument, "unsupported operation type")
 	}
@@ -254,8 +256,8 @@ func (server *RpcService) ThingModelMsgIssue(ctx context.Context, request *thing
 
 func NewRpcService(ctx context.Context, wg *sync.WaitGroup, cancel context.CancelFunc, cfg config.RPCConfig,
 	dc cache.DeviceProvider, pc cache.ProductProvider, driverProvider interfaces.Driver, cli *client.ResourceClient,
-	logger logger.Logger) (*RpcService, error) {
-
+	logger logger.Logger,
+) (*RpcService, error) {
 	if cfg.Address == "" {
 		logger.Error("required rpc address")
 		return nil, errors.New("required rpc address")

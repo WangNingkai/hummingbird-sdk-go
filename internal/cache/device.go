@@ -17,7 +17,7 @@ package cache
 import (
 	"sync"
 
-	"github.com/winc-link/hummingbird-sdk-go/model"
+	"github.com/wangningkai/hummingbird-sdk-go/model"
 )
 
 type DeviceProvider interface {
