@@ -169,3 +169,8 @@ func (d *DriverService) DeleteCustomStorage(keys []string) error {
 func (d *DriverService) GetAllCustomStorage() (map[string][]byte, error) {
 	return d.getAllCustomStorage()
 }
+
+// RefreshCache 刷新缓存
+func (d *DriverService) RefreshCache() error {
+	return d.initCache()
+}
